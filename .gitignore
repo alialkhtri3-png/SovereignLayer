@@ -1,0 +1,12 @@
+node_modules/
+.env
+.evn
+*.log
+.DS_Store
+
+# secrets
+*.key
+*.secret
+
+# temporary files
+~

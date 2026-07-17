@@ -1,19 +1,32 @@
-# SovereignLayer 🛡️
-**Decentralized Identity & Verification Infrastructure**
+# Sovereign Identity Engine 🛡️🤖
 
-SovereignLayer is a cryptographic protocol designed to bind professional identity to on-chain credentials. By leveraging IPFS, Ethereum signatures, and W3C standards, we provide a trustless environment for achievement tracking and verifiable identity.
+**AI-Powered Blockchain Identity & Reputation Intelligence**
 
-## 🚀 Protocol Overview
-- **DID (Decentralized Identity):** `did:web:ali.cb.id`
-- **Verification Engine:** EIP-191 Cryptographic Signature Validation
-- **Storage:** Immutable IPFS CIDs
+Sovereign Identity Engine is an AI-powered Web3 identity analysis platform that transforms blockchain wallet addresses into intelligent identity profiles.
 
-## 🛠️ Quick Start
-To verify the identity protocol locally:
-```bash
-node backend/verify-credential.js
+The engine analyzes public on-chain activity and generates reputation insights without requiring access to private keys or controlling user assets.
 
-🤝 Partnerships
-​SovereignLayer is open for integration partnerships. We provide infrastructure for DAOs, Web3 protocols, and identity-focused DApps.
-​Built by Ali Alkhtri
+## 🌐 Vision
 
+Blockchain addresses contain valuable behavioral signals, but applications usually see only transactions.
+
+Sovereign Identity Engine creates an intelligence layer for Web3 by combining blockchain analytics with AI-powered explanations.
+
+## ✨ Features
+
+### Wallet Intelligence
+- Wallet activity analysis
+- Transaction history scanning
+- Wallet age calculation
+- Token behavior analysis
+
+### Reputation Engine
+- Wallet reputation scoring
+- Risk assessment
+- Sybil behavior indicators
+- Network relationship analysis
+
+### AI Identity Reports
+Uses OpenAI models to convert blockchain data into human-readable identity reports.
+
+Example:
