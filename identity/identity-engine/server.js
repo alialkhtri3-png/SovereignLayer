@@ -1,3 +1,4 @@
+import { saveIdentity } from "./database/identityStore.js";
 import express from "express";
 import cors from "cors";
 import { ethers } from "ethers";
@@ -148,7 +149,12 @@ const result =
 await analyzeWallet(wallet);
 
 
-res.json(result);
+saveIdentity(result);
+
+res.json({
+  ...result,
+  stored:true
+});
 
 
 }catch(e){
