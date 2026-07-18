@@ -1,86 +1,116 @@
 import { ethers } from "ethers";
 
-const provider = new ethers.JsonRpcProvider(
-"https://mainnet.base.org"
-);
+const RPC =
+process.env.BASE_RPC ||
+"https://mainnet.base.org";
+
+const provider = new ethers.JsonRpcProvider(RPC);
 
 const TRANSFER_TOPIC =
-ethers.id("Transfer(address,address,uint256)");
+"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
 
-export async function scanBaseLogs(wallet){
 
-    if(!ethers.isAddress(wallet))
-        throw new Error("Invalid wallet");
+async function safeLogs(wallet){
 
-    const latestBlock =
+    const latest =
         await provider.getBlockNumber();
 
-    const range = 2000;
-
-    const fromBlock =
+    const from =
         Math.max(
-            0,
-            latestBlock-range
+            latest - 50000,
+            0
         );
 
-
-    const padded =
-    "0x" +
-    wallet
-    .toLowerCase()
-    .replace("0x","")
-    .padStart(64,"0");
-
+    const step = 5000;
 
     let logs=[];
 
 
-    try{
+    for(
+        let start=from;
+        start<latest;
+        start+=step
+    ){
 
-        logs =
-        await provider.getLogs({
-
-            fromBlock,
-            toBlock:latestBlock,
-
-            topics:[
-                TRANSFER_TOPIC,
-                null,
-                padded
-            ]
-
-        });
-
-
-    }catch(e){
-
-        console.log(
-        "SAFE LOG SCAN:",
-        e.message
+        let end =
+        Math.min(
+            start+step-1,
+            latest
         );
+
+
+        try{
+
+            const batch =
+            await provider.getLogs({
+
+                fromBlock:start,
+
+                toBlock:end,
+
+                topics:[
+                    TRANSFER_TOPIC,
+                    null,
+                    ethers.zeroPadValue(
+                        wallet,
+                        32
+                    )
+                ]
+
+            });
+
+
+            logs.push(...batch);
+
+
+        }catch(err){
+
+            console.log(
+                "log batch skipped:",
+                start,
+                end
+            );
+
+        }
 
     }
 
 
+    return logs;
+
+}
+
+
+
+export async function scanBaseLogs(wallet){
+
+    const logs =
+    await safeLogs(wallet);
+
+
     return {
 
-        wallet,
+        count:logs.length,
 
-        blocksScanned:
-        latestBlock-fromBlock,
+        transfers:logs.slice(0,50).map(x=>({
 
-        transfers:
-        logs.length,
+            token:x.address,
 
-        contracts:
-        [
-            ...new Set(
-                logs.map(
-                    l=>l.address
-                )
-            )
-        ]
+            block:x.blockNumber,
+
+            tx:x.transactionHash
+
+        }))
+
 
     };
+
+}
+
+
+
+export async function scanLogs(wallet){
+
+    return scanBaseLogs(wallet);
 
 }

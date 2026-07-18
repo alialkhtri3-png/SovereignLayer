@@ -1,9 +1,9 @@
+import { analyzeWallet } from "./analyzer/walletAnalyzer.js";
 import { adminAuth } from "./saas/enterprise/adminAuth.js";
 import express from "express";
 import {passportRoutes} from "./saas/enterprise/identity/passportRoutes.js";
 import {credentialRoutes} from "./saas/enterprise/identity/credentialRoutes.js";
 import cors from "cors";
-
 import { gateway } 
 from "./saas/gateway.js";
 
@@ -220,6 +220,75 @@ error:"Internal Server Error"
 
 });
 
+app.post("/explore", async (req,res)=>{
+    try {
+        const {address} = req.body;
+
+        if(!address){
+            return res.status(400).json({
+                success:false,
+                error:"wallet address required"
+            });
+        }
+
+        const result = await analyzeWallet(address);
+
+        res.json({
+            success:true,
+            wallet:address,
+            intelligence:result
+        });
+
+    } catch(error){
+
+        res.status(500).json({
+            success:false,
+            error:error.message
+        });
+
+    }
+});
+
+app.post("/explore", async (req,res)=>{
+
+    try {
+
+        const { address } = req.body;
+
+        const result = await analyzeWallet(address);
+
+        res.json({
+            success:true,
+            engine:"Sovereign Identity Engine V11.9",
+            wallet:address,
+            analysis:result
+        });
+
+    } catch(error){
+
+        res.status(500).json({
+            success:false,
+            error:error.message
+        });
+
+    }
+
+});
+app.get("/api/status", (req,res)=>{
+  res.json({
+    status:"online",
+    engine:"Sovereign Identity Engine V11.9 Enterprise",
+    port:3001,
+    modules:[
+      "Passport",
+      "Credential",
+      "Intelligence",
+      "Graph"
+    ],
+    time:new Date().toISOString()
+  });
+});
+
 
 
 // Start
@@ -233,3 +302,14 @@ console.log(
 );
 
 });
+
+app.post("/explore",(req,res)=>{
+ const {address}=req.body;
+ res.json({
+  success:true,
+  address,
+  message:"Explorer endpoint active",
+  version:"V11.9"
+ });
+});
+

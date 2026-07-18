@@ -1,93 +1,66 @@
 import { ethers } from "ethers";
 
 const provider = new ethers.JsonRpcProvider(
-  "https://mainnet.base.org"
+ process.env.BASE_RPC || "https://mainnet.base.org"
 );
 
 const TRANSFER_TOPIC =
-  ethers.id("Transfer(address,address,uint256)");
-
-export async function getBaseWalletData(wallet){
-
-    if(!ethers.isAddress(wallet)){
-        throw new Error("Invalid wallet address");
-    }
-
-    const balance =
-        await provider.getBalance(wallet);
-
-    const latestBlock =
-        await provider.getBlockNumber();
+"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
 
 
-    const padded =
-        ethers.zeroPadValue(wallet,32);
+export async function indexWallet(wallet){
+
+    const latest = await provider.getBlockNumber();
+
+    let logs = [];
+
+    const STEP = 5000;
+
+    let start = Math.max(
+        0,
+        latest - 20000
+    );
 
 
-    let logs=[];
+    while(start < latest){
 
-    try{
-
-        logs = await provider.getLogs({
-
-            fromBlock:
-              Math.max(0, latestBlock - 50000),
-
-            toBlock:
-              latestBlock,
-
-            topics:[
-                TRANSFER_TOPIC,
-                null,
-                padded
-            ]
-
-        });
-
-
-        const logsOut =
-        await provider.getLogs({
-
-            fromBlock:
-              Math.max(0, latestBlock - 50000),
-
-            toBlock:
-              latestBlock,
-
-            topics:[
-                TRANSFER_TOPIC,
-                padded
-            ]
-
-        });
-
-
-        logs = [...logs,...logsOut];
-
-
-    }catch(e){
-
-        console.log(
-          "Indexer scan error:",
-          e.message
+        let end = Math.min(
+            start + STEP,
+            latest
         );
 
-    }
+
+        try {
+
+            const chunk =
+            await provider.getLogs({
+
+                fromBlock:start,
+                toBlock:end,
+
+                topics:[
+                    TRANSFER_TOPIC,
+                    null,
+                    ethers.zeroPadValue(wallet,32)
+                ]
+
+            });
 
 
-    let firstSeen=null;
-    let lastActive=null;
+            logs.push(...chunk);
 
 
-    if(logs.length){
+        } catch(e){
 
-        const blocks =
-        logs.map(x=>x.blockNumber)
-            .sort((a,b)=>a-b);
+            console.log(
+                "Indexer chunk error:",
+                e.message
+            );
+
+        }
 
 
-        firstSeen=blocks[0];
-        lastActive=blocks[blocks.length-1];
+        start = end + 1;
 
     }
 
@@ -96,51 +69,26 @@ export async function getBaseWalletData(wallet){
 
         network:"Base",
 
-        wallet,
+        latestBlock:latest,
 
-        balance:{
-            eth:ethers.formatEther(balance)
-        },
+        transfers:logs.length,
 
-
-        activity:{
-
-            transactions:logs.length,
-
-            firstSeen,
-
-            lastActive,
-
-            scannedBlocks:50000
-
-        },
-
-
-        tokens:[],
-
-
-        graph:{
-
-            nodes:[
-              {
-                id:wallet,
-                type:"wallet"
-              }
-            ],
-
-            edges:[]
-
-        },
-
-
-        chain:{
-
-            chainId:8453,
-
-            latestBlock
-
-        }
+        contracts:[
+            ...new Set(
+                logs.map(
+                    x=>x.address
+                )
+            )
+        ]
 
     };
+
+}
+
+
+// backward compatibility
+export async function getBaseWalletData(wallet){
+
+    return await indexWallet(wallet);
 
 }
