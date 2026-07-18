@@ -1,32 +1,58 @@
-# Sovereign Identity Engine 🛡️🤖
+# SovereignLayer Identity Engine
 
-**AI-Powered Blockchain Identity & Reputation Intelligence**
+## Overview
+SovereignLayer is a Web3 identity intelligence engine that analyzes blockchain wallets and creates decentralized reputation profiles.
 
-Sovereign Identity Engine is an AI-powered Web3 identity analysis platform that transforms blockchain wallet addresses into intelligent identity profiles.
+## Identity Engine V6.5 Modules
 
-The engine analyzes public on-chain activity and generates reputation insights without requiring access to private keys or controlling user assets.
+- BaseIndexer
+- TransactionScanner
+- BaseLogScanner
+- WalletAge
+- ActivityAnalyzer
+- TokenScanner
+- GraphBuilder
+- SybilDetector
+- ReputationEngine
 
-## 🌐 Vision
+## API
 
-Blockchain addresses contain valuable behavioral signals, but applications usually see only transactions.
+### GET
+/api/status
 
-Sovereign Identity Engine creates an intelligence layer for Web3 by combining blockchain analytics with AI-powered explanations.
+### POST
+/api/identity
 
-## ✨ Features
+## Output
 
-### Wallet Intelligence
-- Wallet activity analysis
-- Transaction history scanning
-- Wallet age calculation
-- Token behavior analysis
+- Wallet Identity
+- Network Activity
+- Portfolio Data
+- Graph Connections
+- Reputation Score
+- Sybil Risk
 
-### Reputation Engine
-- Wallet reputation scoring
-- Risk assessment
-- Sybil behavior indicators
-- Network relationship analysis
+## Roadmap
 
-### AI Identity Reports
-Uses OpenAI models to convert blockchain data into human-readable identity reports.
+### V6.6
+- Smart Contract Analyzer
+- Contract Risk Detection
 
-Example:
+### V7
+- ERC20 Portfolio Intelligence
+- Token Risk Analysis
+- Advanced Graph Intelligence
+
+## Technology Stack
+
+- Node.js
+- Express
+- Ethers.js
+- React
+- Vite
+- Hardhat
+- Base Network RPC
+
+## Vision
+
+Building a decentralized Web3 identity intelligence layer for users, DAOs, investors and applications.
