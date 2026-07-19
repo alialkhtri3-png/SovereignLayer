@@ -156,3 +156,10 @@ Decentralized Identity • Web3 • Blockchain Intelligence
 
 ```bash
 EOF
+# Sovereign Identity Engine
+
+Official Website:
+https://alialkhtri3-png.github.io/SovereignLayer/
+
+Latest Release:
+https://github.com/alialkhtri3-png/SovereignLayer/releases/tag/v13.0.1
