@@ -1,3 +1,34 @@
+# Sovereign Identity Engine
+
+## Decentralized Identity Infrastructure for Web3
+
+Production Prototype Release
+
+A Web3 identity verification layer providing:
+- Identity Intelligence
+- Verifiable Credentials
+- Cryptographic Verification
+- Reputation Signals
+
+Current Release:
+V13.1.1
+
+Status:
+Market Ready Prototype
+
+Network:
+Base Mainnet
+
+## Resources
+
+- Demo
+- Documentation
+- API
+- Developers
+- Partners
+- Early Access
+- Pricing
+
 # 🧬 Sovereign Identity Engine
 
 ## On-chain Identity Intelligence Layer
