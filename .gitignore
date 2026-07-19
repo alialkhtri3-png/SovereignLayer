@@ -27,3 +27,12 @@ MigrationProvider
 identity-report.json
 wallets.json
 landing.log
+
+.env
+.evn
+node_modules/
+cache/
+out/
+*.log
+
+identity/identity-engine/database/*.json
