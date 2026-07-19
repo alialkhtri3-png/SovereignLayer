@@ -166,3 +166,8 @@ https://github.com/alialkhtri3-png/web3-identity-did-verifiable-credentials-bloc
 ## Architecture
 
 ![Architecture](docs/assets/architecture.png)
+## Current Status
+
+See latest milestone:
+[STATUS V13.1.0](docs/STATUS_V13.1.0.md)
+
