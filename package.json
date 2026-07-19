@@ -1,10 +1,10 @@
-{
+ {
   "name": "sovereign-identity-engine",
   "version": "12.0.0",
   "type": "module",
-    "scripts": {
-    "test": "echo \"Sovereign Identity Engine initialization successful!\" && exit 0",
-    "build": "..." 
+      "scripts": {
+    "test": "node db.test.js",
+    "build": "..."
   }
 
     "dev": "node --watch server.js"
