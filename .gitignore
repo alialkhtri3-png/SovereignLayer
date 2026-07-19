@@ -37,3 +37,14 @@ out/
 
 identity/identity-engine/database/*.json
 issuer.json
+
+# Identity Engine private/runtime data
+database/identities.json
+identity_reports/
+identity/identity-engine/database/
+identity/identity-engine/data/
+
+# Generated credentials
+signed_identity.json
+signed_credential.json
+issuer.json
