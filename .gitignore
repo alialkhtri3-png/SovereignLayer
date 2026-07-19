@@ -36,3 +36,4 @@ out/
 *.log
 
 identity/identity-engine/database/*.json
+issuer.json
