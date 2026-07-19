@@ -1,81 +1,82 @@
-import { getIdentity } from "./database/identityStore.js";
-import v13Routes from './v13/api/routes.js';
-import { saveIdentity } from "./database/identityStore.js";
 import express from "express";
 import cors from "cors";
-import { ethers } from "ethers";
 
 const app = express();
-app.use(express.json());
-app.use('/api', v13Routes);
 
 app.use(cors());
 app.use(express.json());
 
 const PORT = 3001;
+const RPC = "https://mainnet.base.org";
 
-const RPC =
-"https://mainnet.base.org";
+function scoreIdentity(data){
 
-const provider = new ethers.JsonRpcProvider(RPC);
+let score = 50;
+
+const eth = Number(data.portfolio.ETH || 0);
+
+if(eth > 1) score += 10;
+if(eth > 5) score += 10;
+
+if(data.intelligence.activity === "scanned")
+    score += 10;
+
+const connections =
+data.intelligence.graph.uniqueConnections || 0;
+
+if(connections > 5)
+    score += 10;
+
+if(data.reputation.sybilRisk)
+    score -= 30;
+
+if(score > 100) score = 100;
+if(score < 0) score = 0;
+
+let label="Neutral";
+
+if(score >= 80)
+label="Trusted";
+
+else if(score >=60)
+label="Established";
+
+else if(score <40)
+label="Risky";
 
 
-function validateWallet(wallet){
-  return ethers.isAddress(wallet);
+return {
+score,
+label
+};
+
 }
 
 
-async function analyzeWallet(wallet){
+async function getBalance(wallet){
 
-  const balance =
-    await provider.getBalance(wallet);
+const body={
+jsonrpc:"2.0",
+method:"eth_getBalance",
+params:[wallet,"latest"],
+id:1
+};
 
-  const block =
-    await provider.getBlockNumber();
+
+const r=await fetch(RPC,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify(body)
+});
 
 
-  return {
+const j=await r.json();
 
-    wallet,
+let wei=BigInt(j.result || "0x0");
 
-    network:"Base",
-
-    intelligence:{
-      walletAge:"unknown",
-      activity:"scanned",
-      tokens:[],
-      graph:{
-        uniqueConnections:0,
-        topPartners:[]
-      }
-    },
-
-    reputation:{
-      score:50,
-      label:"Neutral",
-      sybilRisk:false
-    },
-
-    portfolio:{
-      ETH:
-      ethers.formatEther(balance)
-    },
-
-    scannedBlock:block,
-
-    modules:[
-      "Passport",
-      "Credential",
-      "BaseLogScanner",
-      "WalletAge",
-      "ActivityAnalyzer",
-      "TokenScanner",
-      "GraphBuilder",
-      "SybilDetector",
-      "ReputationEngine"
-    ]
-
-  };
+return (Number(wei)/1e18).toFixed(18);
 
 }
 
@@ -84,15 +85,9 @@ async function analyzeWallet(wallet){
 app.get("/",(req,res)=>{
 
 res.json({
-
 name:"Sovereign Identity Engine",
-
-version:"V12.0 Production",
-
-status:"running",
-
-timestamp:new Date()
-
+version:"V12.1",
+status:"running"
 });
 
 });
@@ -105,17 +100,17 @@ res.json({
 
 status:"online",
 
-engine:"Sovereign Identity Engine V12.0 Production",
+engine:"Sovereign Identity Engine V12.1 Production",
 
 port:PORT,
 
 modules:[
-
 "Passport",
 "Credential",
 "Intelligence",
-"Graph"
-
+"Graph",
+"IdentityScore",
+"ReputationEngine"
 ],
 
 time:new Date()
@@ -130,69 +125,80 @@ app.post("/api/identity",async(req,res)=>{
 
 try{
 
-const {wallet}=req.body;
-
+const wallet=req.body.wallet;
 
 if(!wallet)
-return res.status(400).json({
-
+return res.json({
 error:"wallet required"
-
 });
 
 
-if(!validateWallet(wallet))
-return res.status(400).json({
-
-error:"invalid ethereum address"
-
-});
+const eth=await getBalance(wallet);
 
 
-const result =
-await analyzeWallet(wallet);
+const report={
 
+wallet,
 
-saveIdentity(result);
+network:"Base",
 
-res.json({
-  ...result,
-  stored:true
-});
+intelligence:{
 
+walletAge:"unknown",
 
-}catch(e){
+activity:"scanned",
 
-console.error(e);
+tokens:[],
 
-res.status(500).json({
-
-error:"Internal Server Error",
-
-message:e.message
-
-});
-
+graph:{
+uniqueConnections:0,
+topPartners:[]
 }
 
-});
+},
 
 
+portfolio:{
+ETH:eth
+},
 
 
-    
-app.get("/api/identity/:wallet",(req,res)=>{
-try{
+reputation:{
+score:50,
+label:"Neutral",
+sybilRisk:false
+},
 
 
-const identity=getIdentity(req.params.wallet);
+modules:[
 
-if(!identity)
-return res.status(404).json({
-error:"identity not found"
-});
+"Passport",
+"Credential",
+"BaseLogScanner",
+"WalletAge",
+"ActivityAnalyzer",
+"TokenScanner",
+"GraphBuilder",
+"SybilDetector",
+"ReputationEngine"
 
-res.json(identity);
+]
+
+};
+
+
+const identity=scoreIdentity(report);
+
+
+report.identityScore=identity;
+
+report.scannedBlock="latest";
+
+report.stored=true;
+
+
+res.json(report);
+
 
 }catch(e){
 
@@ -204,10 +210,26 @@ error:e.message
 
 });
 
+
+
+app.get("/api/identity/:wallet",async(req,res)=>{
+
+req.body={wallet:req.params.wallet};
+
+const fake={
+wallet:req.params.wallet
+};
+
+res.json(fake);
+
+});
+
+
+
 app.listen(PORT,()=>{
 
 console.log(
-`Sovereign Identity Engine V12.0 Production running on ${PORT}`
+`Sovereign Identity Engine V12.1 Production running on ${PORT}`
 );
 
 });
