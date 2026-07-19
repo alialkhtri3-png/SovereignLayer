@@ -8,7 +8,7 @@ Sovereign Identity Engine is an infrastructure layer that converts wallet activi
 
 Wallets are not identities.
 
-We analyze blockchain behavior, relationships, reputation signals, and risk patterns to create a trusted identity profile for every address.
+We analyze blockchain behavior, relationships, reputation signals, and risk patterns to create trusted identity profiles.
 
 ---
 
@@ -33,6 +33,8 @@ Sovereign Identity Engine transforms these signals into actionable intelligence.
 # ✨ Features
 
 ## 🔍 Wallet Intelligence
+
+Capabilities:
 
 - Transaction analysis
 - Wallet age detection
