@@ -163,3 +163,6 @@ https://alialkhtri3-png.github.io/SovereignLayer/
 
 Latest Release:
 https://github.com/alialkhtri3-png/SovereignLayer/releases/tag/v13.0.1
+## Architecture
+
+![Architecture](docs/assets/architecture.png)
