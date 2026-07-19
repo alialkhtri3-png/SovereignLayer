@@ -1,19 +1,26 @@
 # Sovereign Identity Engine
 
-Open-source Web3 identity infrastructure.
+## Decentralized Identity Infrastructure for Web3
 
-## Live Demo
+Production Prototype Release
 
-https://alialkhtri3-png.github.io/SovereignLayer/demo.html
+A Web3 identity verification layer providing trusted identity intelligence, verifiable credentials, and cryptographic verification.
 
-## Documentation
+### Includes
+✓ Identity Engine  
+✓ Verifiable Credentials  
+✓ Credential Verification Demo  
+✓ API Documentation  
+✓ Developer Platform  
+✓ Partner Program  
+✓ Pricing Model  
+✓ Investor Overview  
 
-- Whitepaper
-- Architecture
-- Security Model
-- API
+### Network
+Base Mainnet
 
-## Release
+### Status
+Market Ready Prototype
 
-Latest:
-V13.1.0
+### Vision
+Building an open identity verification layer for the decentralized internet.
