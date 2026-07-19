@@ -1,32 +1,41 @@
-# Identity Engine Roadmap
+# Sovereign Identity Engine Roadmap
 
-## V1 - Prototype ✅
+## Completed
 
-- Wallet Signature Verification
-- DID Generation
-- Wallet Analyzer
-- Reputation Score
-- Sybil Detection
-
-
-## V2 - Web3 Identity Layer 🚀
-
-- ENS Integration
-- ERC20 Portfolio Analysis
-- NFT Identity
-- Wallet Relationship Graph
-- On-chain Activity Scoring
-
-
-## V3 - Intelligence Protocol 🧠
-
-- AI Fraud Detection
+### V13.x
+- Wallet Intelligence
+- Identity Score Engine
+- Sovereign Passport
 - Verifiable Credentials
-- Identity Badge NFT
-- Cross-chain Identity
-- DAO Reputation Layer
+- ECDSA Signing
+- Credential Verification
+- Reputation Engine
+- Graph Intelligence
+- Base Mainnet Scanner
+- Public Demo
 
 
-## Vision
+## V14 Roadmap
 
-Transform blockchain addresses into trusted digital identities.
+### Identity Infrastructure
+- DID Support
+- Multi-chain Identity
+- Identity History
+- Credential Registry
+
+### Developer Platform
+- REST API
+- SDK
+- Documentation Portal
+- Integration Examples
+
+### Enterprise
+- Organization Accounts
+- Permission System
+- Audit Logs
+- Identity Analytics
+
+
+## Long Term Vision
+
+Build an open identity verification layer for Web3 applications.
